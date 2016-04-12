@@ -1538,3 +1538,12 @@ GO
 IF  EXISTS (SELECT * FROM sys.foreign_keys WHERE object_id = OBJECT_ID(N'[dbo].[FK_HugoNovels_Authors]') AND parent_object_id = OBJECT_ID(N'[dbo].[Novels]'))
 ALTER TABLE [dbo].[Novels] CHECK CONSTRAINT [FK_HugoNovels_Authors]
 GO
+
+
+
+ALTER TABLE Nominations
+	ALTER COLUMN IsWinner bit null
+
+	UPDATE Nominations
+	SET IsWinner = null
+	where AwardID = 2 and YearNominated  = 2015
