@@ -51,7 +51,7 @@ select b.AuthorID, n.YearNominated
 from Nominations n
 inner join Novels b on b.ID = n.BookID
 --group by n.YearNominated, b.AuthorID
-where b.AuthorID = 90
+where b.AuthorID = 103
 --order by b.AuthorID, n.YearNominated
 
 
@@ -70,16 +70,19 @@ from
 	inner join Novels b on b.ID = n.BookID
 	) as t1
 inner join 
-(select b.AuthorID, n.YearNominated
-from Nominations n
-inner join Novels b on b.ID = n.BookID
-) as t2 on t1.AuthorID = t2.AuthorID
+	(select b.AuthorID, n.YearNominated
+	from Nominations n
+	inner join Novels b on b.ID = n.BookID
+	) as t2 
+on t1.AuthorID = t2.AuthorID
 where t1.YearNominated > t2.YearNominated
-and not exists
- (select *
-from Nominations n
-inner join Novels b on b.ID = n.BookID
-where n.YearNominated < t1.YearNominated and n.YearNominated > t2.YearNominated
-and b.AuthorID = t1.AuthorID)
+	and not exists
+	 (select *
+	from Nominations n
+	inner join Novels b on b.ID = n.BookID
+	where n.YearNominated < t1.YearNominated and n.YearNominated > t2.YearNominated
+	and b.AuthorID = t1.AuthorID)
 group by t1.AuthorID
 order by dif desc
+
+select * from Authors where ID = 103
